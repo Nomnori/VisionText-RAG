@@ -22,6 +22,14 @@ class Settings(BaseSettings):
     embedding_model_name: str = "BAAI/bge-small-zh-v1.5"
     embedding_device: str = "auto"
 
+    vlm_model_name: str = "Qwen/Qwen2.5-VL-3B-Instruct"
+    vlm_device: str = "auto"
+    vlm_max_new_tokens: int = 512
+
+    pdf_enabled: bool = True
+    pdf_vlm_enabled: bool = True
+    pdf_cache_dir: str = "./data/pdf_cache"
+
     chroma_persist_dir: str = "./chroma"
     chroma_collection: str = "visiontext_rag"
 
@@ -72,6 +80,18 @@ class Settings(BaseSettings):
     @property
     def embedding_model_path(self) -> str:
         return self.resolve_model_path(self.embedding_model_name)
+
+    @property
+    def vlm_model_path(self) -> str:
+        return self.resolve_model_path(self.vlm_model_name)
+
+    @property
+    def pdf_cache_path(self) -> Path:
+        path = Path(self.pdf_cache_dir)
+        if not path.is_absolute():
+            path = PROJECT_ROOT / path
+        path.mkdir(parents=True, exist_ok=True)
+        return path
 
 
 @lru_cache

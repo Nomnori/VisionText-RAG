@@ -9,24 +9,27 @@
       <section class="status-card">
         <h2>系统状态</h2>
         <ul>
-          <li><span>LLM</span><strong>{{ health?.llm_model || "加载中..." }}</strong></li>
-          <li><span>Embedding</span><strong>{{ health?.embedding_model || "-" }}</strong></li>
-          <li><span>知识库文件</span><strong>{{ health?.knowledge_files ?? 0 }}</strong></li>
+          <li><span>LLM</span><strong class="truncate">{{ shortModel(health?.llm_model) }}</strong></li>
+          <li><span>Embedding</span><strong class="truncate">{{ shortModel(health?.embedding_model) }}</strong></li>
+          <li><span>VLM</span><strong class="truncate">{{ shortModel(health?.vlm_model) }}</strong></li>
+          <li><span>GPU</span><strong>{{ health?.gpu_name || (health?.cuda_available ? "可用" : "不可用") }}</strong></li>
+          <li><span>知识库</span><strong>MD {{ health?.md_files ?? 0 }} / PDF {{ health?.pdf_files ?? 0 }}</strong></li>
           <li><span>已索引块</span><strong>{{ health?.indexed_chunks ?? 0 }}</strong></li>
         </ul>
       </section>
 
       <section class="files-card">
         <div class="card-header">
-          <h2>Markdown 文件</h2>
+          <h2>知识库文件</h2>
           <button class="ghost" :disabled="loadingIngest" @click="handleIngest">
             {{ loadingIngest ? "索引中..." : "重建索引" }}
           </button>
         </div>
-        <p v-if="!knowledgeFiles.length" class="empty">将 .md 文件放入 knowledge/ 目录</p>
+        <p v-if="!knowledgeFiles.length" class="empty">将 .md / .pdf 文件放入 knowledge/ 目录</p>
         <ul v-else>
           <li v-for="file in knowledgeFiles" :key="file.path">
-            <span>{{ file.path }}</span>
+            <span class="file-type" :class="file.file_type">{{ file.file_type === 'pdf' ? 'PDF' : 'MD' }}</span>
+            <span class="file-path">{{ file.path }}</span>
             <small>{{ formatSize(file.size_bytes) }}</small>
           </li>
         </ul>
@@ -92,7 +95,14 @@ const messagesRef = ref(null);
 
 function formatSize(bytes) {
   if (bytes < 1024) return `${bytes} B`;
-  return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function shortModel(path) {
+  if (!path) return "-";
+  const name = path.split(/[/\\]/).pop();
+  return name.length > 22 ? `${name.slice(0, 20)}…` : name;
 }
 
 async function scrollToBottom() {

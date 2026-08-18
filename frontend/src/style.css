@@ -79,10 +79,48 @@ input {
 .files-card li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 10px;
   padding: 6px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   font-size: 0.8125rem;
+}
+
+.truncate {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.files-card li {
+  justify-content: flex-start;
+}
+
+.file-type {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.file-type.pdf {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.file-type.markdown {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+}
+
+.file-path {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .status-card li:last-child,

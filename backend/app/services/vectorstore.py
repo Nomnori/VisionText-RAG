@@ -4,6 +4,7 @@ import chromadb
 from chromadb.api.models.Collection import Collection
 
 from app.config import get_settings
+from app.services.citations import modality_label
 from app.services.embeddings import embed_texts
 from app.services.ingestion import DocumentChunk
 
@@ -61,6 +62,10 @@ def index_chunks(chunks: list[DocumentChunk]) -> int:
                     "source": chunk.source,
                     "title": chunk.title,
                     "chunk_index": chunk.chunk_index,
+                    "content_type": chunk.content_type,
+                    "file_type": chunk.file_type,
+                    "page_number": chunk.page_number if chunk.page_number is not None else -1,
+                    "modality_label": modality_label(chunk.content_type),
                 }
                 for chunk in batch
             ],
@@ -92,6 +97,7 @@ def query_similar(query: str, top_k: int) -> list[dict]:
         metadata = metadatas[idx] or {}
         distance = distances[idx] if idx < len(distances) else 1.0
         score = max(0.0, 1.0 - distance)
+        page_number = metadata.get("page_number", -1)
         hits.append(
             {
                 "id": doc_id,
@@ -100,6 +106,10 @@ def query_similar(query: str, top_k: int) -> list[dict]:
                 "chunk_index": int(metadata.get("chunk_index", 0)),
                 "content": documents[idx] or "",
                 "score": round(score, 4),
+                "content_type": metadata.get("content_type", "text"),
+                "file_type": metadata.get("file_type", "markdown"),
+                "page_number": int(page_number) if int(page_number) >= 0 else None,
+                "modality_label": metadata.get("modality_label", modality_label(metadata.get("content_type", "text"))),
             }
         )
 

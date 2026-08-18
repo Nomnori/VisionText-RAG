@@ -9,18 +9,20 @@
     <Transition name="sources-expand">
       <div v-show="expanded" class="sources-panel">
         <article v-for="(source, index) in sources" :key="source.id" class="source-card">
-          <button
-            type="button"
-            class="source-header"
-            @click="toggleSource(index)"
-          >
+          <button type="button" class="source-header" @click="toggleSource(index)">
             <span class="source-index">[{{ index + 1 }}]</span>
+            <span class="type-badge" :class="source.content_type">{{ typeLabel(source) }}</span>
             <span class="source-title">{{ source.title }}</span>
             <span class="source-score">{{ (source.score * 100).toFixed(0) }}%</span>
             <span class="chevron small" :class="{ open: openSources[index] }">›</span>
           </button>
           <div v-show="openSources[index]" class="source-body">
-            <div class="source-meta">{{ source.source }} · 块 #{{ source.chunk_index + 1 }}</div>
+            <div class="source-meta">
+              <span class="file-badge" :class="source.file_type">{{ fileLabel(source.file_type) }}</span>
+              <span>{{ source.source }}</span>
+              <span v-if="source.page_number">· 第 {{ source.page_number }} 页</span>
+              <span>· 块 #{{ source.chunk_index + 1 }}</span>
+            </div>
             <p>{{ source.content }}</p>
           </div>
         </article>
@@ -32,7 +34,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 
-const props = defineProps({
+defineProps({
   sources: { type: Array, required: true },
 });
 
@@ -41,6 +43,16 @@ const openSources = reactive({});
 
 function toggleSource(index) {
   openSources[index] = !openSources[index];
+}
+
+function typeLabel(source) {
+  return source.modality_label || source.content_type || "文本";
+}
+
+function fileLabel(fileType) {
+  if (fileType === "pdf") return "PDF";
+  if (fileType === "markdown") return "MD";
+  return fileType?.toUpperCase() || "FILE";
 }
 </script>
 
@@ -126,6 +138,31 @@ function toggleSource(index) {
   color: #2563eb;
   font-weight: 600;
   font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.type-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.type-badge.text,
+.type-badge.markdown {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.type-badge.table {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.type-badge.image {
+  background: #ede9fe;
+  color: #6d28d9;
 }
 
 .source-title {
@@ -143,6 +180,7 @@ function toggleSource(index) {
   background: #e5e7eb;
   padding: 2px 8px;
   border-radius: 999px;
+  flex-shrink: 0;
 }
 
 .source-body {
@@ -151,9 +189,30 @@ function toggleSource(index) {
 }
 
 .source-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
   font-size: 0.75rem;
   color: #6b7280;
   margin: 8px 0;
+}
+
+.file-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.file-badge.pdf {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.file-badge.markdown {
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .source-body p {

@@ -8,7 +8,7 @@ from app.models.schemas import (
     IngestResponse,
     KnowledgeFileInfo,
 )
-from app.services.device import get_runtime_devices
+from app.services.device import get_runtime_devices, resolve_device
 from app.services.ingestion import list_knowledge_files
 from app.services.rag import chat_with_citations, ingest_knowledge_base
 from app.services.vectorstore import count_indexed_chunks
@@ -21,17 +21,26 @@ def health() -> HealthResponse:
     settings = get_settings()
     files = list_knowledge_files()
     runtime = get_runtime_devices()
+    md_count = sum(1 for item in files if item.file_type == "markdown")
+    pdf_count = sum(1 for item in files if item.file_type == "pdf")
+
     return HealthResponse(
         status="ok",
         llm_model=settings.llm_model_name,
         embedding_model=settings.embedding_model_name,
+        vlm_model=settings.vlm_model_name,
         knowledge_files=len(files),
+        md_files=md_count,
+        pdf_files=pdf_count,
         indexed_chunks=count_indexed_chunks(),
         cuda_available=runtime["cuda_available"],
         gpu_name=runtime.get("device_name"),
         llm_device=runtime["llm_device"],
         embedding_device=runtime["embedding_device"],
+        vlm_device=resolve_device(settings.vlm_device),
         llm_load_in_4bit=runtime["llm_load_in_4bit"],
+        pdf_enabled=settings.pdf_enabled,
+        pdf_vlm_enabled=settings.pdf_vlm_enabled,
     )
 
 
@@ -41,11 +50,12 @@ def knowledge_files() -> list[KnowledgeFileInfo]:
     files = list_knowledge_files()
     return [
         KnowledgeFileInfo(
-            filename=path.name,
-            path=str(path.relative_to(settings.knowledge_path)).replace("\\", "/"),
-            size_bytes=path.stat().st_size,
+            filename=item.path.name,
+            path=str(item.path.relative_to(settings.knowledge_path)).replace("\\", "/"),
+            size_bytes=item.path.stat().st_size,
+            file_type=item.file_type,
         )
-        for path in files
+        for item in files
     ]
 
 

@@ -10,6 +10,39 @@
 
 ---
 
+## [0.2.0] - 2026-08-19
+
+### Added
+
+- **PDF 多模态知识库支持**（Docling + Qwen2.5-VL + Embedding + ChromaDB）
+  - PDF 文本 → Embedding
+  - PDF 表格 → 结构化 Markdown → Embedding
+  - PDF 图片 → Qwen2.5-VL 描述 → Embedding
+- 新增服务：`pdf_parser.py`、`vlm.py`、`citations.py`
+- 引用来源增强：类型徽章（文本/表格/图片描述）、PDF 页码、文件格式（MD/PDF）
+- 索引统计：区分 md/pdf 文件数及各类 chunk 数量
+- WebUI 侧边栏展示 VLM 状态、MD/PDF 文件分类
+
+### Changed
+
+- 知识库支持 `.md` + `.pdf` 混合索引
+- `/api/health`、`/api/knowledge` 返回 PDF 相关字段
+
+---
+
+## [0.1.4] - 2026-08-19
+
+### Changed
+
+- **WebUI 对话渲染对标 ChatGPT 风格**
+  - 助手回复支持 Markdown 渲染（标题、列表、代码块高亮、表格、引用等）
+  - 消息布局改为头像 + 内容区，用户/助手分栏展示
+  - 引用来源默认折叠，点击「引用来源 (N)」展开；每条来源可单独展开查看原文
+  - 加载态改为打字动画指示器
+- 新增依赖：`marked`、`dompurify`、`highlight.js`
+
+---
+
 ## [0.1.3] - 2026-08-19
 
 ### Added
