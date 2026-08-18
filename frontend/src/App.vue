@@ -46,7 +46,7 @@
           :content="message.content"
           :sources="message.sources"
         />
-        <div v-if="loadingChat" class="typing">正在检索并生成回答...</div>
+        <TypingIndicator v-if="loadingChat" />
       </section>
 
       <form class="composer" @submit.prevent="handleSubmit">
@@ -72,6 +72,7 @@
 <script setup>
 import { nextTick, onMounted, ref } from "vue";
 import ChatMessage from "./components/ChatMessage.vue";
+import TypingIndicator from "./components/TypingIndicator.vue";
 import {
   fetchHealth,
   fetchKnowledgeFiles,
