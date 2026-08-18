@@ -45,11 +45,11 @@ class LLMService:
             model_kwargs["device_map"] = "auto" if device == "cuda" else None
 
         self._tokenizer = AutoTokenizer.from_pretrained(
-            self.settings.llm_model_name,
+            self.settings.llm_model_path,
             trust_remote_code=True,
         )
         self._model = AutoModelForCausalLM.from_pretrained(
-            self.settings.llm_model_name,
+            self.settings.llm_model_path,
             **model_kwargs,
         )
 

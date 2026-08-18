@@ -4,9 +4,13 @@
 
 ## [Unreleased]
 
-### Added
+## [0.1.1] - 2026-08-19
 
-- 添加 `scripts/download-models.ps1`，支持通过 hf-mirror.com 国内镜像下载模型
+### Fixed
+
+- 修复从 `backend/` 启动时 `./models/` 本地模型路径无法解析导致索引失败
+- 修复 `start-all.ps1` 在 Windows PowerShell 5.1 下的中文编码解析错误
+- 改进启动脚本：首次安装依赖、等待后端就绪后再启动前端
 
 ## [0.1.0] - 2026-08-19
 
@@ -17,12 +21,19 @@
 - 问答 API 返回答案及引用来源（文件名、标题、片段、相关度）
 - Vue 3 WebUI：聊天界面、索引重建、引用来源展示
 - 启动脚本 `scripts/start-backend.ps1` 与 `scripts/start-frontend.ps1`
+- 一键启动脚本 `start.bat` / `start.ps1` / `scripts/start-all.ps1`
+- 模型下载脚本 `scripts/download-models.ps1`（hf-mirror 国内镜像）
 - 架构文档 `docs/ARCHITECTURE.md`
 - `knowledge/` 目录用于存放 Markdown 知识库
+- `models/README.md` 说明本地模型目录（权重不提交 Git）
 
 ### Fixed
 
 - 修复 `.gitignore` 误忽略 `backend/app/models/` 导致 schema 未提交
+
+### Changed
+
+- 优化 `.gitignore`：忽略 `/models/*` 但保留 `models/README.md`
 
 ### Added (initial)
 

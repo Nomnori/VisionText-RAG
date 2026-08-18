@@ -8,7 +8,7 @@ from app.config import get_settings
 @lru_cache
 def get_embedding_model() -> SentenceTransformer:
     settings = get_settings()
-    return SentenceTransformer(settings.embedding_model_name)
+    return SentenceTransformer(settings.embedding_model_path)
 
 
 def embed_texts(texts: list[str]) -> list[list[float]]:

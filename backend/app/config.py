@@ -52,6 +52,26 @@ class Settings(BaseSettings):
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
 
+    def resolve_model_path(self, model_name: str) -> str:
+        path = Path(model_name)
+        if path.is_absolute() and path.exists():
+            return str(path)
+        if model_name.startswith("./") or model_name.startswith(".\\"):
+            local_path = PROJECT_ROOT / model_name[2:]
+            if local_path.exists():
+                return str(local_path)
+        if (PROJECT_ROOT / model_name).exists():
+            return str(PROJECT_ROOT / model_name)
+        return model_name
+
+    @property
+    def llm_model_path(self) -> str:
+        return self.resolve_model_path(self.llm_model_name)
+
+    @property
+    def embedding_model_path(self) -> str:
+        return self.resolve_model_path(self.embedding_model_name)
+
 
 @lru_cache
 def get_settings() -> Settings:
