@@ -60,7 +60,10 @@ scope 表示影响模块，例如：
 
 ## 变更摘要记录
 
-每次有意义的修改，除 Git Commit 外，还应在 [`CHANGELOG.md`](./CHANGELOG.md) 中追加条目，便于追溯项目演进。
+每次有意义的修改，除 Git Commit 外，还应在 [`CHANGELOG.md`](./CHANGELOG.md) 的 **`[Unreleased]`** 段落追加条目。
+
+摘要写在哪里？→ **只有一个文件**：`docs/CHANGELOG.md`（不是每个修改单独建文件）。  
+文档索引见 [`docs/README.md`](./README.md)。
 
 ## 工作流程
 

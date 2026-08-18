@@ -27,11 +27,17 @@ VisionText-RAG/
 - Python 3.10+
 - Node.js 18+
 - 推荐 NVIDIA GPU（8GB+ 显存，4bit 量化）；CPU 可运行但较慢
-- 首次运行会自动从 HuggingFace 下载模型
+- 模型需先下载到 `models/`（约 15 GB，**不会上传到 Git**）
 
 ## 快速开始
 
-### 1. 配置环境变量
+### 1. 下载模型（首次）
+
+```powershell
+.\scripts\download-models.ps1
+```
+
+### 2. 配置环境变量
 
 ```powershell
 copy .env.example .env
@@ -39,21 +45,22 @@ copy .env.example .env
 
 按需修改 `.env` 中的模型路径、设备、端口等。
 
-### 2. 启动后端
+### 3. 一键启动
+
+双击 `start.bat`，或在项目根目录运行：
 
 ```powershell
-.\scripts\start-backend.ps1
+.\start.ps1
 ```
 
-API 默认地址：http://127.0.0.1:8000
+将自动打开两个窗口：后端 API（8000）+ 前端 WebUI（5173）。
 
-### 3. 启动前端
+也可分别启动：
 
 ```powershell
-.\scripts\start-frontend.ps1
+.\scripts\start-backend.ps1   # 终端 1
+.\scripts\start-frontend.ps1  # 终端 2
 ```
-
-WebUI 默认地址：http://127.0.0.1:5173
 
 ### 4. 导入知识库
 
@@ -72,8 +79,9 @@ WebUI 默认地址：http://127.0.0.1:5173
 
 ## 文档
 
+- [文档索引与摘要说明](./docs/README.md)
+- [变更日志（每次修改摘要）](./docs/CHANGELOG.md)
 - [Git 提交规范](./docs/GIT_COMMIT_CONVENTION.md)
-- [变更日志](./docs/CHANGELOG.md)
 - [架构说明](./docs/ARCHITECTURE.md)
 
 ## 开发约定
