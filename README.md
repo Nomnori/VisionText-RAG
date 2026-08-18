@@ -9,7 +9,8 @@ VisionText-RAG/
 ├── backend/          # FastAPI + RAG 服务
 ├── frontend/         # Vue 3 WebUI
 ├── knowledge/        # Markdown 知识库（放入 .md 文件）
-├── chroma/           # ChromaDB 持久化（自动生成）
+├── models/           # 本地模型权重（不提交 Git，见 models/README.md）
+├── chroma/           # ChromaDB 持久化（自动生成，不提交 Git）
 └── docs/             # 项目文档
 ```
 

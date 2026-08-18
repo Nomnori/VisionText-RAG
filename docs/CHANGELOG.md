@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- 添加 `scripts/download-models.ps1`，支持通过 hf-mirror.com 国内镜像下载模型
+
 ## [0.1.0] - 2026-08-19
 
 ### Added

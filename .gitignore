@@ -52,9 +52,10 @@ logs/
 .mypy_cache/
 .ruff_cache/
 
-# Data & models (large files)
-data/
-models/
+# Data & model weights (large files, never commit)
+/data/
+/models/*
+!/models/README.md
 *.bin
 *.safetensors
 *.gguf
