@@ -8,6 +8,7 @@ from app.models.schemas import (
     IngestResponse,
     KnowledgeFileInfo,
 )
+from app.services.device import get_runtime_devices
 from app.services.ingestion import list_knowledge_files
 from app.services.rag import chat_with_citations, ingest_knowledge_base
 from app.services.vectorstore import count_indexed_chunks
@@ -19,12 +20,18 @@ router = APIRouter(prefix="/api")
 def health() -> HealthResponse:
     settings = get_settings()
     files = list_knowledge_files()
+    runtime = get_runtime_devices()
     return HealthResponse(
         status="ok",
         llm_model=settings.llm_model_name,
         embedding_model=settings.embedding_model_name,
         knowledge_files=len(files),
         indexed_chunks=count_indexed_chunks(),
+        cuda_available=runtime["cuda_available"],
+        gpu_name=runtime.get("device_name"),
+        llm_device=runtime["llm_device"],
+        embedding_device=runtime["embedding_device"],
+        llm_load_in_4bit=runtime["llm_load_in_4bit"],
     )
 
 

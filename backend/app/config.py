@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     llm_temperature: float = 0.3
 
     embedding_model_name: str = "BAAI/bge-small-zh-v1.5"
+    embedding_device: str = "auto"
 
     chroma_persist_dir: str = "./chroma"
     chroma_collection: str = "visiontext_rag"

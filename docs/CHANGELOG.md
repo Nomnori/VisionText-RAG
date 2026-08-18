@@ -10,6 +10,34 @@
 
 ---
 
+## [0.1.3] - 2026-08-19
+
+### Added
+
+- **GPU 支持**：新增 `scripts/install-gpu-torch.ps1`，为 RTX 5070（sm_120）安装 PyTorch cu128 nightly
+- **停止脚本**：新增 `stop.bat` / `scripts/stop-all.ps1`，按端口 8000/5173 彻底停止后端与前端进程
+- **设备信息**：`/api/health` 返回 GPU 名称、LLM/Embedding 运行设备、4bit 量化状态
+
+### Changed
+
+- `.env` 默认 `LLM_DEVICE=cuda`、`EMBEDDING_DEVICE=cuda`
+- Embedding 与 LLM 均走 GPU 推理；12GB 显存启用 4bit 量化
+
+### Fixed
+
+- 关闭终端后 Python 仍占 CPU：7B 模型在 CPU 推理极耗资源 + 独立窗口进程未退出；使用 `stop.bat` 清理
+
+---
+
+## [0.1.2] - 2026-08-19
+
+### Changed
+
+- **文档摘要机制澄清**：新增 `docs/README.md` 作为文档索引，说明变更摘要统一写在 `CHANGELOG.md` 而非分散文件
+- **CHANGELOG 补全**：补录全部 8 次 Git 提交的摘要说明与提交对照表，便于从 Git 历史回溯
+
+---
+
 ## [0.1.1] - 2026-08-19
 
 ### Fixed

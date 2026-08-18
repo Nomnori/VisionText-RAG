@@ -32,6 +32,11 @@ class HealthResponse(BaseModel):
     embedding_model: str
     knowledge_files: int
     indexed_chunks: int
+    cuda_available: bool = False
+    gpu_name: str | None = None
+    llm_device: str = "cpu"
+    embedding_device: str = "cpu"
+    llm_load_in_4bit: bool = False
 
 
 class KnowledgeFileInfo(BaseModel):

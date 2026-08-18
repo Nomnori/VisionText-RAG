@@ -4,6 +4,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from app.config import get_settings
+from app.services.device import resolve_device
 
 THINK_CLOSE_TAG = "<" + "/think>"
 
@@ -15,15 +16,14 @@ class LLMService:
         self._model = None
 
     def _resolve_device(self) -> str:
-        if self.settings.llm_device != "auto":
-            return self.settings.llm_device
-        return "cuda" if torch.cuda.is_available() else "cpu"
+        return resolve_device(self.settings.llm_device)
 
     def _ensure_loaded(self) -> None:
         if self._model is not None and self._tokenizer is not None:
             return
 
         device = self._resolve_device()
+        print(f"[llm] loading model on device: {device}, 4bit={self.settings.llm_load_in_4bit and device == 'cuda'}")
         model_kwargs: dict = {"trust_remote_code": True}
 
         if self.settings.llm_load_in_4bit and device == "cuda":
