@@ -16,6 +16,9 @@
 
 - `scripts/download-vlm.ps1`：通过 hf-mirror 下载 Qwen2.5-VL-3B-Instruct 到本地（约 7.5 GB）
 - `download-models.ps1` 增加 VLM 模型下载段
+- 示例知识库文档（`knowledge/` 高校教务相关 Markdown）
+- `LICENSE`（MIT）
+- 完善根目录 `README.md`（多模态架构、快速开始、公有仓库说明）
 
 ### Changed
 
