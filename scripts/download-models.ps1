@@ -65,4 +65,33 @@ foreach ($f in $LlmBig) {
     Download-File "$LlmBase/$f" "$LlmDir/$f"
 }
 
+Write-Host "[DONE] DeepSeek-R1-Distill-Qwen-7B complete"
+
+# --- VLM: Qwen2.5-VL-3B-Instruct (~7.5 GB) ---
+$VlmBase = "$Mirror/Qwen/Qwen2.5-VL-3B-Instruct/resolve/main"
+$VlmDir = "$Root/Qwen2.5-VL-3B-Instruct"
+$VlmSmall = @(
+    "config.json",
+    "generation_config.json",
+    "chat_template.json",
+    "preprocessor_config.json",
+    "tokenizer.json",
+    "tokenizer_config.json",
+    "merges.txt",
+    "vocab.json",
+    "model.safetensors.index.json"
+)
+foreach ($f in $VlmSmall) {
+    Download-File "$VlmBase/$f" "$VlmDir/$f"
+}
+
+$VlmBig = @(
+    "model-00001-of-00002.safetensors",
+    "model-00002-of-00002.safetensors"
+)
+foreach ($f in $VlmBig) {
+    Download-File "$VlmBase/$f" "$VlmDir/$f"
+}
+
+Write-Host "[DONE] Qwen2.5-VL-3B-Instruct complete"
 Write-Host "[DONE] All models downloaded to $Root"

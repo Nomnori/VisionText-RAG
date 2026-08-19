@@ -14,11 +14,11 @@ models/
 ## 下载模型
 
 ```powershell
-# LLM + Embedding
+# 全部模型（LLM + Embedding + VLM）
 .\scripts\download-models.ps1
 
-# VLM（PDF 图片解析，hf-mirror 手动下载）
-# https://hf-mirror.com/Qwen/Qwen2.5-VL-3B-Instruct
+# 仅下载 VLM
+.\scripts\download-vlm.ps1
 ```
 
 ## 配置

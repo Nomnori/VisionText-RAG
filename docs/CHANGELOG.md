@@ -10,6 +10,19 @@
 
 ---
 
+## [0.2.1] - 2026-08-19
+
+### Added
+
+- `scripts/download-vlm.ps1`：通过 hf-mirror 下载 Qwen2.5-VL-3B-Instruct 到本地（约 7.5 GB）
+- `download-models.ps1` 增加 VLM 模型下载段
+
+### Changed
+
+- `.env` 默认使用本地 VLM：`VLM_MODEL_NAME=./models/Qwen2.5-VL-3B-Instruct`
+
+---
+
 ## [0.2.0] - 2026-08-19
 
 ### Added
